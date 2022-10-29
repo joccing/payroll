@@ -1,1 +1,1 @@
-# payroll
+#Example of how to use Spring Boot with JPA, MySQL and Jasypt
