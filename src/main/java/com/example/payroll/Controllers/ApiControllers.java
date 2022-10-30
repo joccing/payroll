@@ -2,8 +2,8 @@ package com.example.payroll.Controllers;
 
 import com.example.payroll.Models.Employee;
 import com.example.payroll.Repo.EmployeeService;
+import com.example.payroll.Repo.OffsetBasedPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +35,10 @@ public class ApiControllers {
     @GetMapping(value = "/users")
     public List<Employee> getEmployees(
             @RequestParam (required = false, defaultValue = "0.0") String min,
-            @RequestParam (required = false, defaultValue = "4000.0") String max) {
+            @RequestParam (required = false, defaultValue = "4000.0") String max,
+            @RequestParam (required = false, defaultValue = "0") String offset) {
 
-        Pageable pageable = PageRequest.of(0, 1000);
-        return employeeService.findBySalaryBetweenWithPagination(Float.valueOf(min),Float.valueOf(max),pageable);
+        Pageable pageable = new OffsetBasedPageRequest(Long.parseLong(offset), 1000);
+        return employeeService.findBySalaryBetweenWithPagination(Float.parseFloat(min),Float.parseFloat(max),pageable);
     }
 }
