@@ -5,6 +5,7 @@ import com.example.payroll.Repo.EmployeeService;
 import com.example.payroll.Repo.OffsetBasedPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +37,24 @@ public class ApiControllers {
     public List<Employee> getEmployees(
             @RequestParam (required = false, defaultValue = "0.0") String min,
             @RequestParam (required = false, defaultValue = "4000.0") String max,
-            @RequestParam (required = false, defaultValue = "0") String offset) {
+            @RequestParam (required = false, defaultValue = "0") String offset,
+            @RequestParam (required = false, defaultValue = "10000") String limit,
+            @RequestParam (required = false, defaultValue = "none") String sort) {
 
-        Pageable pageable = new OffsetBasedPageRequest(Long.parseLong(offset), 1000);
+        Pageable pageable;
+        String src = sort.toLowerCase();
+        if (src.matches("name") || src.matches("salary")) {
+                pageable = new OffsetBasedPageRequest(
+                        Long.parseLong(offset),
+                        Integer.parseInt(limit),
+                        Sort.Direction.ASC,
+                        src);
+        }else{
+                pageable = new OffsetBasedPageRequest(
+                        Long.parseLong(offset),
+                        Integer.parseInt(limit));
+        }
+
         return employeeService.findBySalaryBetweenWithPagination(Float.parseFloat(min),Float.parseFloat(max),pageable);
     }
 }
