@@ -5,10 +5,11 @@ import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
+@Table(name="employees")
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     @Column
@@ -21,6 +22,7 @@ public class Employee {
     }
 
     public Employee(String name, float salary) {
+        super();
         this.name = name;
         this.salary = salary;
     }
