@@ -1,7 +1,7 @@
 package com.example.payroll.Controllers;
 
 import com.example.payroll.ErrorHandling.DataRetrievalException;
-import com.example.payroll.Models.EmployeeView;
+import com.example.payroll.Models.ResponseModel;
 import com.example.payroll.Repo.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController
 public class ApiControllers {
@@ -35,17 +33,18 @@ public class ApiControllers {
     }*/
 
     @GetMapping(value = "/users")
-    public ResponseEntity<List<EmployeeView>> getEmployees(
+    public ResponseEntity<ResponseModel> getEmployees(
             @RequestParam (required = false, defaultValue = "0.0") String min,
             @RequestParam (required = false, defaultValue = "4000.0") String max,
             @RequestParam (required = false, defaultValue = "0") String offset,
             @RequestParam (required = false, defaultValue = "10000") String limit,
             @RequestParam (required = false, defaultValue = "none") String sort) throws ResponseStatusException {
 
-        List<EmployeeView> employees;
+        ResponseModel results;
         try {
-            employees = employeeService.findBySalaryBetweenWithPagination(
-                    Float.parseFloat(min), Float.parseFloat(max), Long.parseLong(offset), Integer.parseInt(limit), sort);
+
+            results = new ResponseModel(employeeService.findBySalaryBetweenWithPagination(
+                    Float.parseFloat(min), Float.parseFloat(max), Long.parseLong(offset), Integer.parseInt(limit), sort));
         }
         catch( DataRetrievalException e ){
             e.printStackTrace();
@@ -53,6 +52,6 @@ public class ApiControllers {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(employees);
+                .body(results);
     }
 }
