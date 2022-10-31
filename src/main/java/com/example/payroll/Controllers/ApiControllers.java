@@ -17,21 +17,6 @@ public class ApiControllers {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping(value = "/")
-    public String getPage(){
-        return "Welcome Joc";
-    }
-
-/*    @GetMapping(value = "/users")
-    public List<Employee> getEmployees(){
-        return employeeService.findAll();
-    }
-
-    @GetMapping(value = "/users/salary")
-    public List<Employee> getSalaryAtLeast(@RequestParam (required = false, defaultValue = "0.0") String min ){
-        return employeeService.findBySalaryGreaterThanEqual(Float.valueOf(min));
-    }*/
-
     @GetMapping(value = "/users")
     public ResponseEntity<ResponseModel> getEmployees(
             @RequestParam (required = false, defaultValue = "0.0") String min,
@@ -42,7 +27,6 @@ public class ApiControllers {
 
         ResponseModel results;
         try {
-
             results = new ResponseModel(employeeService.findBySalaryBetweenWithPagination(
                     Float.parseFloat(min), Float.parseFloat(max), Long.parseLong(offset), Integer.parseInt(limit), sort));
         }

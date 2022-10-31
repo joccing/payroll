@@ -9,12 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 @Component
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    /*@Query(value = "SELECT * FROM employees t WHERE t.salary >= :min", nativeQuery = true)
-    List<Employee> findBySalaryGreaterThanEqual(@Param("min") float min);*/
-
     @Query(value = "SELECT * FROM employees WHERE salary BETWEEN :min AND :max", nativeQuery = true)
     Page<EmployeeView> findBySalaryBetweenWithPagination(@Param("min") float min, @Param("max") float max, Pageable pageable);
 }

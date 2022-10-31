@@ -15,16 +15,6 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-/*    public List<Employee> findAll() {
-
-        List<Employee> result = employeeRepository.findAll();
-        return DataMapper.removeID(result);
-    }
-
-    /*public List<Employee> findBySalaryGreaterThanEqual(float min){
-        return employeeRepository.findBySalaryGreaterThanEqual(min);
-    }*/
-
     public List<EmployeeView> findBySalaryBetweenWithPagination(float min, float max, long offset, int limit, String sort) throws DataRetrievalException {
 
         Pageable pageable;
