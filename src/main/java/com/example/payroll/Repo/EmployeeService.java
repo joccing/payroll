@@ -1,6 +1,6 @@
 package com.example.payroll.Repo;
 
-import com.example.payroll.Models.Employee;
+import com.example.payroll.ErrorHandling.DataRetrievalException;
 import com.example.payroll.Models.EmployeeView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class EmployeeService {
         return employeeRepository.findBySalaryGreaterThanEqual(min);
     }*/
 
-    public List<EmployeeView> findBySalaryBetweenWithPagination(float min, float max, long offset, int limit, String sort ) {
+    public List<EmployeeView> findBySalaryBetweenWithPagination(float min, float max, long offset, int limit, String sort) throws DataRetrievalException {
 
         Pageable pageable;
         String src = sort.toLowerCase();
@@ -33,6 +33,9 @@ public class EmployeeService {
             pageable = new OffsetBasedPageRequest( offset, limit, Sort.Direction.ASC, src );
         else
             pageable = new OffsetBasedPageRequest( offset, limit );
+
+        if( min < 0 || max > 4000 )
+            throw new DataRetrievalException("Allowed values for min and max are 0 and 4000.");
 
         return employeeRepository.findBySalaryBetweenWithPagination( min, max, pageable ).getContent();
     }
