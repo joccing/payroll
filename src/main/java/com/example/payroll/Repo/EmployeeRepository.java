@@ -1,6 +1,7 @@
 package com.example.payroll.Repo;
 
 import com.example.payroll.Models.Employee;
+import com.example.payroll.Models.EmployeeView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findBySalaryGreaterThanEqual(@Param("min") float min);*/
 
     @Query(value = "SELECT * FROM employees WHERE salary BETWEEN :min AND :max", nativeQuery = true)
-    Page<Employee> findBySalaryBetweenWithPagination(@Param("min") float min, @Param("max") float max, Pageable pageable);
+    Page<EmployeeView> findBySalaryBetweenWithPagination(@Param("min") float min, @Param("max") float max, Pageable pageable);
 }
