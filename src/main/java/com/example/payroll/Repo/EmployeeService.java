@@ -36,7 +36,7 @@ public class EmployeeService {
 
         float salary = employee.getSalary();
 
-        if( salary < 0L || salary > 4000L)
+        if( salary < 0 || salary > 4000)
             throw new DataSavingException("Salary range needs to be between 0 and 4000.");
 
         employeeRepository.saveAndFlush(employee);
