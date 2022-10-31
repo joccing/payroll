@@ -1,14 +1,15 @@
 package com.example.payroll.Controllers;
 
 import com.example.payroll.ErrorHandling.DataRetrievalException;
+import com.example.payroll.ErrorHandling.DataSavingException;
+import com.example.payroll.Models.Employee;
 import com.example.payroll.Models.ResponseModel;
+import com.example.payroll.Models.SuccessModel;
 import com.example.payroll.Repo.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -37,5 +38,19 @@ public class ApiControllers {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(results);
+    }
+
+    @PostMapping(value = "/save")
+    public ResponseEntity<SuccessModel> saveEmployee(@RequestBody Employee employee){
+
+        try {
+            employeeService.saveEmployee(employee);
+        }catch( DataSavingException e ){
+            e.printStackTrace();
+            throw new ResponseStatusException( HttpStatus.BAD_REQUEST, e.getMessage(), e );
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new SuccessModel(1));
     }
 }
