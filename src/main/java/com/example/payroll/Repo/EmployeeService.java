@@ -28,19 +28,12 @@ public class EmployeeService {
         else
             pageable = new OffsetBasedPageRequest( offset, limit );
 
-        if( min < 0 || max > 4000 )
-            throw new RuntimeException("Allowed values for min and max are 0 and 4000.");
-
         return employeeRepository.findBySalaryBetweenWithPagination( min, max, pageable ).getContent();
     }
 
-    public void saveOrUpdateEmployee(Employee employee) throws RuntimeException {
+    public void saveOrUpdateEmployee(Employee employee, boolean flush) throws RuntimeException {
 
-        float salary = employee.getSalary();
         String name = employee.getName();
-
-        if( salary < 0 || salary > 4000)
-            throw new RuntimeException("Salary range needs to be between 0 and 4000.");
 
         List<Employee> resultSearch = findByName(name);
         int size = resultSearch.size();
@@ -48,7 +41,7 @@ public class EmployeeService {
         if( size == 0 ){
 
             log.info("No identical name found.. proceeding to save");
-            employeeRepository.saveAndFlush(employee);
+            employeeRepository.save(employee);
 
         } else if (size == 1) {
 
@@ -57,14 +50,20 @@ public class EmployeeService {
             log.info("1 identical name found.. updating record");
 
             employeeRepository.updateEmployee(employeeFound.getId(),employee.getName(),employee.getSalary());
-            employeeRepository.flush();
 
         } else {
             throw new RuntimeException("Unexpected: " + size + " records found with name = " + name);
         }
+
+        if( flush )
+            employeeRepository.flush();
     }
 
     private List<Employee> findByName(String name) throws RuntimeException {
         return employeeRepository.findByName(name);
+    }
+
+    public void flush(){
+        employeeRepository.flush();
     }
 }

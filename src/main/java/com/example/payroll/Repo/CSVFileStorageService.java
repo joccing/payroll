@@ -33,10 +33,14 @@ public class CSVFileStorageService {
         }
     }
 
-    public void save(MultipartFile file) throws RuntimeException {
+    public Path save(MultipartFile file) throws RuntimeException {
         try {
+
             log.info("Saving.." + file.getOriginalFilename());
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Path path = this.root.resolve(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), path);
+            return path;
+
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
@@ -61,21 +65,19 @@ public class CSVFileStorageService {
         FileSystemUtils.deleteRecursively(root.toFile());
     }
 
-    public void delete(String filename) {
+    public void delete(Path file) {
 
         try{
-            Path file = root.resolve(filename);
             Files.deleteIfExists(file);
-
         } catch (IOException e) {
             throw new RuntimeException("Could not delete the file. Error: " + e.getMessage());
         }
     }
 
-    public int isValidCSV(String filename) throws RuntimeException {
+    public int isValidCSV(Path pathFile) throws RuntimeException {
 
         try {
-            File file = load(filename).getFile();
+            File file = pathFile.toFile();
             CSVReader reader = new CSVReader(new FileReader(file));
 
             reader.skip(1); // skip first line for titles
@@ -90,7 +92,7 @@ public class CSVFileStorageService {
                     validCSV = false;
                     break;
                 }else{
-                    // check if salary is a float
+                    // check if salary is a valid float
                     try {
                         Float.parseFloat(nextLine[1].trim());
                     } catch (NumberFormatException e) {
@@ -105,7 +107,7 @@ public class CSVFileStorageService {
             reader.close();
 
             if(!validCSV)
-                throw new RuntimeException("Invalid values found in CSV. Error: ");
+                throw new RuntimeException("Invalid values found in CSV.");
 
             return lines;
 
