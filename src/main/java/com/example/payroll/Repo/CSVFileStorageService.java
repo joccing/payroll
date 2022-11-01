@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
@@ -53,6 +54,10 @@ public class CSVFileStorageService {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
+    }
+
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(root.toFile());
     }
 
     public void delete(String filename) {

@@ -1,9 +1,6 @@
 package com.example.payroll.Controllers;
 
-import com.example.payroll.Models.Employee;
-import com.example.payroll.Models.ResponseMessage;
-import com.example.payroll.Models.ResponseModel;
-import com.example.payroll.Models.SuccessModel;
+import com.example.payroll.Models.*;
 import com.example.payroll.Repo.CSVFileStorageService;
 import com.example.payroll.Repo.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +43,8 @@ public class ApiControllers {
     @PostMapping(value = "/save")
     public ResponseEntity<SuccessModel> saveEmployee(@RequestBody Employee employee){
 
-        employeeService.saveEmployee(employee);
+        // Only records with unique names are allowed
+        employeeService.saveOrUpdateEmployee(employee);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new SuccessModel(1));
