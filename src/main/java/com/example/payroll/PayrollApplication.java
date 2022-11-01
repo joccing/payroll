@@ -14,17 +14,7 @@ public class PayrollApplication implements CommandLineRunner {
     CSVFileStorageService csvFileStorageService;
 
     public static void main(String... args) {
-
         SpringApplication.run(PayrollApplication.class, args);
-
-/*
-        CSVFileStorageService csvFileStorageService = new CSVFileStorageService();
-        csvFileStorageService.init();
-
-        int lines = csvFileStorageService.isValidCSV("test.csv");
-        if( lines >= 0)
-            System.out.println("Valid CSV! lines=" + lines);
-*/
     }
 
     @Override
