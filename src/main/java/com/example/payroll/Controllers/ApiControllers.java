@@ -3,6 +3,8 @@ package com.example.payroll.Controllers;
 import com.example.payroll.Models.*;
 import com.example.payroll.Repo.CSVFileStorageService;
 import com.example.payroll.Repo.EmployeeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class ApiControllers {
+
+    private static final Logger log = LoggerFactory.getLogger(ApiControllers.class);
 
     @Autowired
     private EmployeeService employeeService;
@@ -50,8 +54,9 @@ public class ApiControllers {
                 .body(new SuccessModel(1));
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/upload")
+    public ResponseEntity<ResponseMessage> uploadFile(
+            @RequestParam(value = "file") MultipartFile file) {
         String message;
         try {
             csvFileStorageService.save(file);
