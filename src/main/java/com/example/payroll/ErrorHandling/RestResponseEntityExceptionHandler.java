@@ -12,7 +12,7 @@ import java.util.Date;
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler( value = {DataRetrievalException.class, DataSavingException.class} )
+    @ExceptionHandler( value = {RuntimeException.class} )
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleException(RuntimeException ex, WebRequest request){
         ErrorMessage message = new ErrorMessage(
