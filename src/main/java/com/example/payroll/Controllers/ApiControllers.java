@@ -1,8 +1,8 @@
 package com.example.payroll.Controllers;
 
 import com.example.payroll.Models.*;
-import com.example.payroll.Repo.CSVFileStorageService;
-import com.example.payroll.Repo.EmployeeService;
+import com.example.payroll.Services.CSVFileStorageService;
+import com.example.payroll.Services.EmployeeService;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,15 @@ import java.nio.file.Path;
 public class ApiControllers {
 
     @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @Autowired
-    private CSVFileStorageService csvFileStorageService;
+    private final CSVFileStorageService csvFileStorageService;
+
+    ApiControllers( EmployeeService employeeService, CSVFileStorageService csvFileStorageService){
+        this.employeeService = employeeService;
+        this.csvFileStorageService = csvFileStorageService;
+    }
 
     @GetMapping(value = "/users")
     public ResponseEntity<ResponseModel> getEmployees(

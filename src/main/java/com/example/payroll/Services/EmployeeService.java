@@ -1,18 +1,20 @@
-package com.example.payroll.Repo;
+package com.example.payroll.Services;
 
 import com.example.payroll.Controllers.ApiControllers;
 import com.example.payroll.Models.Employee;
 import com.example.payroll.Models.EmployeeView;
+import com.example.payroll.Repo.EmployeeRepository;
+import com.example.payroll.Repo.OffsetBasedPageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class EmployeeService {
     private static final Logger log = LoggerFactory.getLogger(ApiControllers.class);
 

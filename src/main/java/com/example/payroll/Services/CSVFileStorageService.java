@@ -1,4 +1,4 @@
-package com.example.payroll.Repo;
+package com.example.payroll.Services;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -12,11 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-@Component
+@Service
 public class CSVFileStorageService {
     private static final Logger log = LoggerFactory.getLogger(CSVFileStorageService.class);
     private final Path root = Paths.get("uploads");
