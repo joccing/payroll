@@ -96,7 +96,7 @@ public class ApiControllers {
             csvFileStorageService.delete(path);
         }
 
-        message = "Made " + dbChanges + " updates to database successfully. Skipped: " + (size - dbChanges);
+        message = "Made " + dbChanges + " changes to database successfully. Skipped: " + (size - dbChanges);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage(message,1));

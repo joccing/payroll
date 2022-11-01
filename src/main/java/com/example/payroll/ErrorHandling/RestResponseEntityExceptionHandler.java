@@ -19,6 +19,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleRuntimeException(RuntimeException ex, WebRequest request){
         return new ErrorMessage(
+                0,
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
@@ -29,6 +30,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseStatus(value = HttpStatus.EXPECTATION_FAILED)
     public ErrorMessage handleMaxUploadSizeException(RuntimeException ex, WebRequest request){
         return new ErrorMessage(
+                0,
                 HttpStatus.EXPECTATION_FAILED.value(),
                 new Date(),
                 ex.getMessage(),
