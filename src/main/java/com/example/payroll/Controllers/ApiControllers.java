@@ -31,6 +31,13 @@ public class ApiControllers {
         this.csvFileStorageService = csvFileStorageService;
     }
 
+    @GetMapping(value = "/")
+    public ResponseEntity<ResponseMessage> landingPage(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Welcome to my Payroll Application!",1));
+    }
+
     @GetMapping(value = "/users")
     public ResponseEntity<ResponseModel> getEmployees(
             @RequestParam (required = false, defaultValue = "0.0") String min,
