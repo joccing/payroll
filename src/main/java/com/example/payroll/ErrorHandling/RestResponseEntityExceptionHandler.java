@@ -15,7 +15,7 @@ import java.util.Date;
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler( value = {RuntimeException.class, CsvValidationException.class} )
+    @ExceptionHandler( value = {RuntimeException.class} )
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage handleRuntimeException(RuntimeException ex, WebRequest request){
         return new ErrorMessage(
@@ -26,7 +26,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 request.getDescription(false));
     }
 
-    @ExceptionHandler( value = {MaxUploadSizeExceededException.class, FileNotFoundException.class} )
+    @ExceptionHandler( value = {MaxUploadSizeExceededException.class, FileNotFoundException.class, CsvValidationException.class} )
     @ResponseStatus(value = HttpStatus.EXPECTATION_FAILED)
     public ErrorMessage handleMaxUploadSizeException(RuntimeException ex, WebRequest request){
         return new ErrorMessage(

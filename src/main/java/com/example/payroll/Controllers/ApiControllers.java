@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 
 @RestController
 public class ApiControllers {
@@ -75,8 +76,8 @@ public class ApiControllers {
 
         String message;
 
-        // save csv to server store
-        Path path = csvFileStorageService.save(multipartFile);
+        // save csv to server store with current date time appended to name
+        Path path = csvFileStorageService.save(multipartFile,LocalDateTime.now().toString());
 
         // Check if file is valid CSV
         int size;

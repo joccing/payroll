@@ -33,11 +33,11 @@ public class CSVFileStorageService {
         }
     }
 
-    public Path save(MultipartFile file) throws RuntimeException {
+    public Path save(MultipartFile file,String append) throws RuntimeException {
         try {
 
             log.info("Saving.." + file.getOriginalFilename());
-            Path path = this.root.resolve(file.getOriginalFilename());
+            Path path = this.root.resolve(file.getOriginalFilename()+append);
             Files.copy(file.getInputStream(), path);
             return path;
 
@@ -106,9 +106,10 @@ public class CSVFileStorageService {
 
             reader.close();
 
-            if(!validCSV)
-                throw new RuntimeException("Invalid values found in CSV.");
-
+            if(!validCSV) {
+                file.delete();
+                throw new CsvValidationException("Invalid values found in CSV.");
+            }
             return lines;
 
         }catch (IOException e){
